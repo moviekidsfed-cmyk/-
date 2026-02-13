@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С Днём Валентина 🌸</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+background:black;
+color:white;
+animation:fadeIn 2s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+/* 🌸 ФОН */
+.bg{
+position:fixed;
+inset:0;
+background:
+linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.45)),
+url("myphoto.jpg") center/cover no-repeat;
+animation:zoom 25s infinite alternate ease-in-out;
+z-index:-5;
+}
+
+@keyframes zoom{
+from{transform:scale(1);}
+to{transform:scale(1.1);}
+}
+
+/* 💌 КНОПКА */
+button{
+padding:16px 55px;
+border-radius:60px;
+border:none;
+background:linear-gradient(45deg,#ff66b2,#ffffff);
+color:#ff2e88;
+font-weight:600;
+font-size:16px;
+cursor:pointer;
+box-shadow:0 0 40px #ff66b2;
+transition:0.5s;
+}
+
+button:hover{
+transform:scale(1.1);
+box-shadow:0 0 70px #ffffff;
+}
+
+/* 💌 ПИСЬМО */
+.letter-wrapper{
+margin-top:40px;
+perspective:1200px;
+}
+
+.letter{
+width:360px;
+max-width:90vw;
+height:430px;
+background:linear-gradient(
+135deg,
+rgba(255,255,255,0.25),
+rgba(255,255,255,0.05)
+);
+backdrop-filter:blur(25px);
+-webkit-backdrop-filter:blur(25px);
+border-radius:30px;
+transform-style:preserve-3d;
+transform:rotateX(90deg);
+transition:1s cubic-bezier(.25,.8,.25,1);
+padding:25px;
+overflow:auto;
+box-shadow:
+0 30px 80px rgba(255,105,180,0.6),
+inset 0 0 30px rgba(255,255,255,0.2);
+border:1px solid rgba(255,255,255,0.3);
+}
+
+.letter.open{
+transform:rotateX(0deg);
+}
+
+.photo{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid white;
+box-shadow:0 0 25px #ff99cc;
+display:block;
+margin:0 auto 15px auto;
+}
+
+/* ✍️ ТЕКСТ */
+.typewriter span{
+opacity:0;
+animation:appear 0.05s forwards;
+}
+
+@keyframes appear{
+to{opacity:1;}
+}
+
+/* 🌸 ЛЕПЕСТКИ */
+.petal{
+position:absolute;
+pointer-events:none;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+0%{
+transform:translateY(-10vh) rotate(0deg);
+opacity:0;
+}
+20%{opacity:1;}
+100%{
+transform:translateY(110vh) rotate(360deg);
+opacity:0;
+}
+}
+
+/* 💖 СЕРДЦА */
+.click-heart{
+position:absolute;
+color:#ff69b4;
+font-size:26px;
+pointer-events:none;
+animation:pop 1.2s ease forwards;
+text-shadow:0 0 15px pink;
+}
+
+@keyframes pop{
+0%{transform:scale(0);opacity:1;}
+50%{transform:scale(1.5);}
+100%{transform:scale(0.5);opacity:0;}
+}
+
+.container{
+text-align:center;
+}
+
+/* 📱 МОБИЛЬНАЯ ВЕРСИЯ */
+@media (max-width:480px){
+button{
+padding:14px 35px;
+font-size:14px;
+}
+
+.letter{
+height:380px;
+}
+
+.photo{
+width:100px;
+height:100px;
+}
+
+h2{
+font-size:18px;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<div class="container">
+<button onclick="openLetter()">Открыть поздравление 💌</button>
+
+<div class="letter-wrapper">
+<div class="letter" id="letter">
+<img src="photo.jpg" class="photo">
+<h2 style="text-align:center;">🌸 С Днём Валентина 💗</h2>
+<p class="typewriter" id="text"></p>
+</div>
+</div>
+</div>
+
+<audio id="music" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const message = `
+Поздравляю тебя с Днём Святого Валентина 💞
+
+Пусть этот день будет наполнен теплом,
+нежностью и счастливыми моментами.
+
+Пусть в твоём сердце всегда цветёт весна 🌸
+и исполняются самые красивые мечты.
+
+Ты особенная для меня 💖
+`;
+
+function openLetter(){
+const letter = document.getElementById("letter");
+const music = document.getElementById("music");
+
+letter.classList.add("open");
+
+music.volume = 0.5;
+music.play().catch(()=>{});
+
+typeWriter();
+}
+
+function typeWriter(){
+let textContainer = document.getElementById("text");
+textContainer.innerHTML="";
+let delay = 0;
+
+for(let char of message){
+let span = document.createElement("span");
+span.textContent = char;
+span.style.animationDelay = delay + "s";
+textContainer.appendChild(span);
+delay += 0.03;
+}
+}
+
+/* 🌸 ЛЕПЕСТКИ */
+let petalsCount = 0;
+
+setInterval(()=>{
+if(petalsCount > 30) return;
+
+let petal = document.createElement("img");
+petal.src = "sakura.png";
+petal.className = "petal";
+petal.style.left = Math.random()*100 + "vw";
+petal.style.animationDuration = (Math.random()*6 + 6) + "s";
+petal.style.width = Math.random()*15 + 15 + "px";
+
+document.body.appendChild(petal);
+petalsCount++;
+
+setTimeout(()=>{
+petal.remove();
+petalsCount--;
+},12000);
+},500);
+
+/* 💖 СЕРДЦЕ ПРИ КЛИКЕ */
+document.addEventListener("click",function(e){
+let heart = document.createElement("div");
+heart.className = "click-heart";
+heart.innerHTML = "❤";
+heart.style.left = e.pageX + "px";
+heart.style.top = e.pageY + "px";
+document.body.appendChild(heart);
+
+setTimeout(()=>heart.remove(),1200);
+});
+</script>
+
+</body>
+</html>
